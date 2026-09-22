@@ -98,13 +98,20 @@
       object-position: center 48%;
       box-shadow: 0 0 0 1px rgba(214, 222, 216, 0.2), 0 0 18px rgba(94, 239, 158, 0.18);
     }
+    .brand-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
     .brand-name {
       font-family: var(--display);
       font-size: 14px;
       font-weight: 500;
       letter-spacing: 0.04em;
+      line-height: 1;
     }
     .brand-name span { color: var(--green); }
+    .brand-chain { color: var(--green); line-height: 1; }
     .nav {
       display: flex;
       align-items: center;
@@ -140,9 +147,19 @@
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       margin: 0 0 22px;
-      color: var(--green);
+      color: var(--text);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+    }
+    .eyebrow .where { color: var(--green); }
+    .eyebrow .id {
+      padding: 3px 7px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
     }
     .dot {
       width: 7px;
@@ -262,32 +279,74 @@
       filter: drop-shadow(0 22px 40px rgba(0, 0, 0, 0.55));
     }
 
-    .why {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      margin-top: 28px;
+    .use {
+      padding: 36px 0 8px;
       border-top: 1px solid var(--line);
     }
-    .why article {
-      padding: 28px 28px 32px 0;
-    }
-    .why article + article {
-      padding-left: 28px;
-      border-left: 1px solid var(--line);
-    }
-    .why .num {
-      margin: 0 0 12px;
-      color: var(--green);
-    }
-    .why h2 {
-      margin: 0 0 8px;
+    .use h2 {
+      margin: 12px 0 28px;
+      max-width: 14em;
       font-family: var(--display);
-      font-size: 1.25rem;
       font-weight: 500;
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      line-height: 1.12;
+      letter-spacing: -0.04em;
+    }
+    .uses {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .uses li {
+      padding: 22px 20px 24px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(94, 239, 158, 0.05), rgba(255, 255, 255, 0.015));
+    }
+    .uses h3 {
+      margin: 12px 0 8px;
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: 1.2rem;
       letter-spacing: -0.03em;
     }
-    .why p { margin: 0; color: var(--muted); max-width: 28ch; }
+    .uses p { margin: 0; color: var(--muted); }
+    .later { margin-top: 28px; }
+    .later-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 4px;
+    }
+    .later-head p { margin: 0; }
+    .later-note { color: var(--faint); font-size: 0.95rem; }
+    .later ul {
+      list-style: none;
+      margin: 14px 0 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px 22px;
+    }
+    .later li {
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+    .later strong {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .later li span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
 
     .band {
       margin-top: 8px;
@@ -445,22 +504,25 @@
 
     @media (max-width: 900px) {
       .wrap { width: min(var(--max), calc(100% - 32px)); }
-      .hero, .why, .facts, .qa > div { grid-template-columns: 1fr; }
+      .hero, .uses, .facts, .qa > div { grid-template-columns: 1fr; }
+      .later ul { grid-template-columns: 1fr 1fr; }
       .hero { padding: 40px 0 12px; gap: 12px; }
       .stage { min-height: 0; padding: 8px 0 8px; }
-      .why article, .why article + article {
-        padding: 22px 0;
-        border-left: 0;
-        border-top: 1px solid var(--line);
-      }
-      .why article:first-child { border-top: 0; }
       .site-footer .wrap { flex-direction: column; align-items: start; }
       .nav-text { display: none; }
     }
     @media (max-width: 560px) {
       h1 { font-size: 2.15rem; }
       .actions { flex-direction: column; align-items: stretch; }
-      .clock { gap: 12px; }
+      .clock,
+      .clock-note,
+      .clock-open {
+        width: fit-content;
+        max-width: 100%;
+        margin-inline: auto;
+      }
+      .clock { gap: 22px; justify-content: center; }
+      .later ul, .later-head { grid-template-columns: 1fr; display: grid; }
       .cite { grid-template-columns: 56px 1fr; }
       .cite img { width: 56px; height: 56px; }
     }
@@ -471,10 +533,13 @@
     <div class="wrap">
       <a class="brand" href="#top">
         <img src="token.png" width="42" height="42" alt="" />
-        <span class="brand-name"><span>$</span>STOCKTOK</span>
+        <span class="brand-copy">
+          <span class="brand-name"><span>$</span>STOCKTOK</span>
+          <span class="brand-chain label">Robinhood Chain</span>
+        </span>
       </a>
       <nav class="nav" aria-label="Primary">
-        <a class="nav-text" href="#why">Why</a>
+        <a class="nav-text" href="#use">Use</a>
         <a class="nav-text" href="#launch">Launch</a>
         <a class="nav-text" href="#faq">FAQ</a>
         <a class="nav-x" href="https://x.com/stocktokonrh" target="_blank" rel="noopener noreferrer" aria-label="X, @stocktokonrh">
@@ -488,13 +553,9 @@
     <div class="wrap">
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow label"><span class="dot" aria-hidden="true"></span>Robinhood Chain · 4663</p>
+          <p class="eyebrow label"><span class="dot" aria-hidden="true"></span><span class="where">Robinhood Chain</span><span class="id">4663</span></p>
           <h1>Stocks went onchain.<span class="quiet">This ticker lives next to that.</span></h1>
           <p class="lede">After hours. Stock calendar. Long hold. Launching on Pons Family.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="https://ponsfamily.com/launchpad" target="_blank" rel="noopener noreferrer">Open pad</a>
-            <a class="btn btn-ghost" href="https://x.com/vladtenev/status/2100575159736553687" target="_blank" rel="noopener noreferrer">Vlad on tokenization</a>
-          </div>
           <div class="clock" id="clock" role="timer" aria-live="off" aria-atomic="true" aria-label="Time until the launch window">
             <div class="unit"><b id="cd-d">00</b><small class="label">Days</small></div>
             <div class="unit"><b id="cd-h">00</b><small class="label">Hours</small></div>
@@ -513,29 +574,6 @@
         </div>
       </section>
 
-      <section class="why" id="why" aria-label="Why hold">
-        <article>
-          <p class="num label">01</p>
-          <h2>After hours</h2>
-          <p>The brokerage closes. The token can still move.</p>
-        </article>
-        <article>
-          <p class="num label">02</p>
-          <h2>Stock calendar</h2>
-          <p>Ex-date timing is the thesis. Hold through the date.</p>
-        </article>
-        <article>
-          <p class="num label">03</p>
-          <h2>Long hold</h2>
-          <p>Meant to still make sense next quarter.</p>
-        </article>
-      </section>
-
-      <section class="band" aria-label="How it sits">
-        <p class="sit">Next to the stock tokens on Pons.</p>
-        <p class="sit-note">Those tokens already trade on that pad. $STOCKTOK launches beside them. Public pad, locked LP, no private round. A separate ticker.</p>
-      </section>
-
       <a class="cite" href="https://x.com/vladtenev/status/2100575159736553687" target="_blank" rel="noopener noreferrer">
         <img src="vlad.jpg" width="72" height="72" alt="" />
         <strong>Vlad Tenev</strong>
@@ -543,6 +581,40 @@
         <blockquote>“Tokenization is coming to America.”</blockquote>
         <p class="cite-foot">His post, the day the SEC opened a five-year path for tokenized stock trading. His words. We link them. We don’t speak for him.</p>
       </a>
+
+      <section class="use" id="use" aria-label="How the token is used">
+        <p class="label">Use</p>
+        <h2>Hold it for the hour, and for the date.</h2>
+        <ol class="uses">
+          <li>
+            <p class="label">01 · After the close</p>
+            <h3>The hour the brokerage gives up</h3>
+            <p>Cash trading ends at 4pm New York. This ticker is what you can still move. That hour is the use.</p>
+          </li>
+          <li>
+            <p class="label">02 · The date</p>
+            <h3>Hold through the ex-date</h3>
+            <p>The calendar is the utility. You hold across the date. A listed company’s dividend does not pay out from this token.</p>
+          </li>
+          <li>
+            <p class="label">03 · The quarter</p>
+            <h3>Still the same reason later</h3>
+            <p>Week one is not the product. The hold should still make sense next quarter.</p>
+          </li>
+        </ol>
+        <div class="later">
+          <div class="later-head">
+            <p class="label">After launch</p>
+            <p class="later-note">Coming. Not live on day one.</p>
+          </div>
+          <ul>
+            <li><strong>Custody</strong><span>A hold you can prove later.</span></li>
+            <li><strong>Unwrap</strong><span>Leave the token, if that path ships.</span></li>
+            <li><strong>Redemption</strong><span>Marked coming. Not a share today.</span></li>
+            <li><strong>Voting</strong><span>Marked coming. Not a ballot today.</span></li>
+          </ul>
+        </div>
+      </section>
 
       <section class="launch" id="launch" aria-label="Launch">
         <h2 class="label">Launch</h2>
@@ -557,7 +629,7 @@
           </div>
           <div>
             <dt class="label">Chain</dt>
-            <dd>Robinhood · 4663</dd>
+            <dd>Robinhood Chain · 4663</dd>
           </div>
           <div>
             <dt class="label">Contract</dt>
